@@ -22,4 +22,10 @@ server_scripts {
 	'server/main.lua'
 }
 
-dependency 'es_extended'
+dependency {
+	'es_extended',
+	'bpt_crafting',
+	'bpt_teleport',
+}
+
+-- the following map must also be installed " https://www.gta5-mods.com/maps/secret-warehouse-base-sp-fivem "
