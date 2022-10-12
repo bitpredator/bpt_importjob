@@ -4,7 +4,7 @@ Config.DrawDistance               = 10.0 -- How close do you need to be for the 
 
 Config.MaxInService               = -1 -- How much people can be in service at once?
 Config.EnablePlayerManagement     = true -- Enable society managing.
-Config.EnableSocietyOwnedVehicles = false
+Config.EnableSocietyOwnedVehicles = fasle
 
 Config.Locale                     = 'it'
 

@@ -39,6 +39,21 @@ function ShowLoadingPromt(msg, time, type)
     end)
 end
 
+function GetRandomWalkingNPC()
+        local search = {}
+        local peds = GetGamePool("CPed")
+    
+        for i = 1, #peds, 1 do
+            if IsPedHuman(peds[i]) and IsPedWalking(peds[i]) and not IsPedAPlayer(peds[i]) then
+                search[#search+1] = peds[i]
+            end
+        end
+    
+        if #search > 0 then
+            return search[math.random(#search)]
+        end
+end
+
 function OpenCloakroom()
     ESX.UI.Menu.CloseAll()
 
@@ -104,14 +119,10 @@ function OpenVehicleSpawnerMenu()
                 menu.close()
 
                 local vehicleProps = data.current.value
-                ESX.Game.SpawnVehicle(vehicleProps.model, Config.Zones.VehicleSpawnPoint.Pos,
-                    Config.Zones.VehicleSpawnPoint.Heading, function(vehicle)
-                        ESX.Game.SetVehicleProperties(vehicle, vehicleProps)
-                        local playerPed = PlayerPedId()
-                        TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
-                    end)
-
-                TriggerServerEvent('esx_society:removeVehicleFromGarage', 'import', vehicleProps)
+                ESX.TriggerServerCallback("bpt_importjob:SpawnVehicle", function()
+                    return
+                end, vehicleProps.model, vehicleProps)
+                TriggerServerEvent('esx_society:removeVehicleFromGarage', 'rumpo', vehicleProps)
             end, function(data, menu)
                 CurrentAction = 'vehicle_spawner'
                 CurrentActionMsg = _U('spawner_prompt')
@@ -132,13 +143,10 @@ function OpenVehicleSpawnerMenu()
                 ESX.ShowNotification(_U('spawnpoint_blocked'))
                 return
             end
-
+            ESX.TriggerServerCallback("bpt_importjob:SpawnVehicle", function()
+                ESX.ShowNotification(_U('vehicle_spawned'), "success")
+            end, "rumpo", {plate = "IMPORT JOB"})
             menu.close()
-            ESX.Game.SpawnVehicle(data.current.model, Config.Zones.VehicleSpawnPoint.Pos,
-                Config.Zones.VehicleSpawnPoint.Heading, function(vehicle)
-                    local playerPed = PlayerPedId()
-                    TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
-                end)
         end, function(data, menu)
             CurrentAction = 'vehicle_spawner'
             CurrentActionMsg = _U('spawner_prompt')
@@ -224,9 +232,7 @@ function OpenMobileImportActionsMenu()
         elements = {{
             label = _U('billing'),
             value = 'billing'
-        }, 
-    }
-    
+        }}
     }, function(data, menu)
         if data.current.value == 'billing' then
 
@@ -244,7 +250,7 @@ function OpenMobileImportActionsMenu()
                         ESX.ShowNotification(_U('no_players_near'))
                     else
                         TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(closestPlayer), 'society_import',
-                            'Import', amount)
+                            'import', amount)
                         ESX.ShowNotification(_U('billing_sent'))
                     end
 
@@ -254,7 +260,6 @@ function OpenMobileImportActionsMenu()
                 menu.close()
             end)
         end
-        
     end, function(data, menu)
         menu.close()
     end)
@@ -265,7 +270,7 @@ function IsInAuthorizedVehicle()
     local vehModel = GetEntityModel(GetVehiclePedIsIn(playerPed, false))
 
     for i = 1, #Config.AuthorizedVehicles, 1 do
-        if vehModel == GetHashKey(Config.AuthorizedVehicles[i].model) then
+        if vehModel == joaat(Config.AuthorizedVehicles[i].model) then
             return true
         end
     end
@@ -413,11 +418,11 @@ CreateThread(function()
     local blip = AddBlipForCoord(Config.Zones.ImportActions.Pos.x, Config.Zones.ImportActions.Pos.y,
         Config.Zones.ImportActions.Pos.z)
 
-    SetBlipSprite(blip, 478)
-    SetBlipDisplay(blip, 4)
-    SetBlipScale(blip, 1.0)
-    SetBlipColour(blip, 21)
-    SetBlipAsShortRange(blip, true)
+        SetBlipSprite(blip, 478)
+        SetBlipDisplay(blip, 4)
+        SetBlipScale(blip, 1.0)
+        SetBlipColour(blip, 21)
+        SetBlipAsShortRange(blip, true)
 
     BeginTextCommandSetBlipName('STRING')
     AddTextComponentSubstringPlayerName(_U('blip_import'))
@@ -495,4 +500,4 @@ RegisterCommand('importmenu', function()
     end
 end, false)
 
-RegisterKeyMapping('importmenu', 'Open Import Menu', 'keyboard', 'f6')
+RegisterKeyMapping('importmenu', 'Open import Menu', 'keyboard', 'f6')

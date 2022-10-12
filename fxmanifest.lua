@@ -2,9 +2,9 @@ fx_version 'adamant'
 
 game 'gta5'
 
-description 'ESX Import Job'
-author 'bitpredator'
-version '1.0.0'
+description 'bpt_importjob'
+lua54 'yes'
+version '0.0.3'
 
 shared_script '@es_extended/imports.lua'
 
@@ -22,10 +22,4 @@ server_scripts {
 	'server/main.lua'
 }
 
-dependency {
-	'es_extended',
-	'bpt_crafting',
-	'bpt_teleport',
-}
-
--- the following map must also be installed " https://www.gta5-mods.com/maps/secret-warehouse-base-sp-fivem "
+dependency 'es_extended'
