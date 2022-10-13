@@ -122,7 +122,7 @@ function OpenVehicleSpawnerMenu()
                 ESX.TriggerServerCallback("bpt_importjob:SpawnVehicle", function()
                     return
                 end, vehicleProps.model, vehicleProps)
-                TriggerServerEvent('esx_society:removeVehicleFromGarage', 'rumpo', vehicleProps)
+                TriggerServerEvent('esx_society:removeVehicleFromGarage', 'import', vehicleProps)
             end, function(data, menu)
                 CurrentAction = 'vehicle_spawner'
                 CurrentActionMsg = _U('spawner_prompt')
@@ -145,7 +145,7 @@ function OpenVehicleSpawnerMenu()
             end
             ESX.TriggerServerCallback("bpt_importjob:SpawnVehicle", function()
                 ESX.ShowNotification(_U('vehicle_spawned'), "success")
-            end, "rumpo", {plate = "IMPORT JOB"})
+            end, "rumpo", {plate = "BPT IMPORT"})
             menu.close()
         end, function(data, menu)
             CurrentAction = 'vehicle_spawner'
