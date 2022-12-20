@@ -17,7 +17,7 @@ Config.AuthorizedVehicles = {
 Config.Zones = {
 
 	VehicleSpawner = {
-		Pos   = {x = 1021.252747, y = -2394.303223, z = 30.122314},
+		Pos   = {x = 1021.912109, y = -2372.043945, z = 30.526733},  
 		Size  = {x = 0.6, y = 0.6, z = 0.6},
 		Color = {r = 204, g = 204, b = 0},
 		Type  = 36, Rotate = true

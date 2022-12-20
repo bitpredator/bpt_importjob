@@ -139,7 +139,7 @@ function OpenVehicleSpawnerMenu()
 
             ESX.TriggerServerCallback("bpt_importjob:SpawnVehicle", function()
                 ESX.ShowNotification(_U('vehicle_spawned'), "success")
-            end, element.value, {plate = "BPT IMPORT"})
+            end, element.value, {plate = "IMPO JOB"})
 			ESX.CloseContext()
         end, function(menu)
             CurrentAction = 'vehicle_spawner'
